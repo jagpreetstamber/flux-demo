@@ -27,4 +27,4 @@ spec:
       tag: ${buildVersion}
     ingress:
       path: ${ingressPath}
-    message: ${demoMessage}
+    message: "I am deployed using Git Repository"
