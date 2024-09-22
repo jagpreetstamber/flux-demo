@@ -1,0 +1,30 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: fluxev2demo-git
+  namespace: ${deploymentNamespace}
+spec:
+  interval: 10m
+  provider: azure
+  url: oci://${acrUrl}/helmcharts/fluxev2demo
+  ref:
+    tag: ${buildVersion}
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: fluxev2demo-git
+  namespace: ${deploymentNamespace}
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: fluxev2demo-git
+  timeout: 10m0s
+  interval: 1m0s
+  values:
+    image:
+      acr: ${acr}
+      tag: ${buildVersion}
+    ingress:
+      path: ${ingressPath}
+    message: ${demoMessage}
